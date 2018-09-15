@@ -1,0 +1,101 @@
+
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Trirong:300,400,600");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+@import '~bootstrap-vue/dist/bootstrap-vue';
+
+
+
+$imgBgPath : "~/img/bg4.png";
+$imgOpacityPath : "~/img/bg4.png";
+body, html{
+  
+  background-image: url(#{$imgBgPath})!important;
+  background-attachment: fixed;
+  
+}
+
+/* pre {
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	overflow: auto;
+	overflow-y: hidden;
+	font-size: 12px;
+	line-height: 20px;
+	background: #efefef;
+	border: 1px solid #777;
+	
+}
+pre code {
+	padding: 10px;
+	color: #333;
+}
+pre span{
+  counter-increment: line;
+} */
+
+h1 {display: block; font-size: 2.3em;}
+h2 {display: block; font-size: 1.5em;}
+h3 {display: block; font-size: 1.17em;}
+h4 {display: block; font-size: 1.15em;}
+h5 {display: block; font-size: 1.1em;}
+h6 {display: block; font-size: 1em;}
+
+.row{
+  padding-top: 10px;
+}
+
+
+.nav-pills .nav-link {
+  color: #ddd;
+  border-radius: 0px!important;
+}
+#testTab__BV_tab_controls_{
+    background-color: rgb(9, 40, 126)!important;
+}
+.noAnswer{
+    color: rgb(223, 22, 22)!important;
+}
+
+.nav.nav-pills.card-header.h-100.flex-column.border-bottom-0.rounded-0{
+	color: rgb(241, 22, 22)!important;
+  border-radius: 0px!important;
+}
+.modal-content{
+    cursor: default!important;
+}
+@media (max-width: 576px) {
+	body, html{
+		font-size: 12pt;
+	}
+	.row, .col{
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+// modal pre-test
+#testTab__BV_tab_controls_{
+	padding: 5px!important;
+}
+	#testTab__BV_tab_controls_ > li > a{
+        font-size:0.8em!important;
+        padding: 5px 0 5px 0!important;
+	}
+}
+
+pre {
+	color: white;
+	background-color: #75461a!important;
+	//text-shadow: 0 -.1em .2em rgb(192, 191, 191);
+	//font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	padding: 10px;
+	border-radius: 5px;
+	
+}
+  
