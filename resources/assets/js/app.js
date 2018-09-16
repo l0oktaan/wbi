@@ -33,7 +33,9 @@ Vue.use(VueCarousel);
 
  //import VueEditor from 'vue2-editor'
  //Vue.use(VueEditor);
+import VueSwal from 'vue-swal'
 
+Vue.use(VueSwal)
 
 import VueQuillEditor from 'vue-quill-editor'
 
@@ -140,7 +142,11 @@ const store = new Vuex.Store({
     mutations: {
         SET_SUBJECT_PRETEST_PATH: (state,path) => {
             state.subject_pretest_path = path
-        }
+        },
+        
+    },
+    actions: {
+        
     }
 })
 /**
@@ -159,6 +165,7 @@ Vue.component('MyTab', require('./components/MyTab.vue'));
 Vue.component('MyFooter', require('./components/MyFooter.vue'));
 Vue.component('MyDetail', require('./components/MyDetail.vue'));
 Vue.component('CodeBox', require('./components/CodeBox.vue'));
+Vue.component('MyAlert', require('./components/MyAlert.vue'));
 
 Vue.component('MyArticles', require('./components/Articles/ListArticles.vue'));
 Vue.component('ShowTopic', require('./components/Articles/ShowTopic.vue'));

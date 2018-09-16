@@ -1,5 +1,6 @@
 <template>
     <div>
+        <my-alert :AlertType="alert"></my-alert>
         <div class="row justify-content-end">
             <div class="col-4">
                 <h2 class="header text-center">ข้อมูลหัวข้อวิชา (Article) 
@@ -293,6 +294,7 @@ export default {
                 [{ 'list': 'ordered'}, { 'list': 'bullet' }],
                 ['image', 'code-block']
             ],
+            alert: ''
             
         }
     },
@@ -319,7 +321,8 @@ export default {
                     order: this.a_order,
                     status: this.a_status
                 }).then(response=>{
-                    this.showAlert("success","บันทึกข้อมูลสำเร็จ");
+                    //this.showAlert("success","บันทึกข้อมูลสำเร็จ");
+                    this.alert = "success";
                     var article = {};                   
                     article = response.data.data;
                     this.a_id = article.id;
@@ -328,6 +331,8 @@ export default {
                     this.a_status = article.status;
                     this.status = "edit";
                     this.fetchData();
+                }).catch(error=>{
+                    this.alert = "error";
                 })
             }else if (this.status == "edit"){
                 var path = `/api/articles/${this.a_id}`;
@@ -337,7 +342,7 @@ export default {
                     order: this.a_order,
                     status: this.a_status
                 }).then(response=>{
-                    this.showAlert("success","บันทึกข้อมูลสำเร็จ");
+                    this.alert = "success";
                     var article = {};                   
                     article = response.data.data;
                     this.a_id = article.id;
@@ -346,6 +351,8 @@ export default {
                     this.a_status = article.status;
                     this.status = "edit";
                     this.fetchData();
+                }).catch(error=>{
+                    this.alert = "error";
                 })
             }
             
@@ -433,18 +440,34 @@ export default {
         deleteArticle(index){
             var id = this.articles[index].id;
             var path = `/api/articles/${id}`;
-            var confirm = window.confirm('คุณต้องการลบหัวข้อวิชา ใช่หรือไม่');
+            this.$swal({
+                title: "คุณต้องการลบหัวข้อวิชา ใช่หรือไม่ ?",
+                icon: "warning",
+                buttons: [
+                    'ยกเลิก',
+                    'ยืนยัน'
+                ],
+                dangerMode: true,
+            }).then(isConfirm =>{
+                //console.log("is confirm :" + isConfirm)
+                if (isConfirm){
+                     axios.delete(path)
+                    .then(response=>{
+                        //this.showAlert("success","ลบข้อมูลสำเร็จ");
+                        this.alert = "success"                        
+                        this.fetchData();
+                        if (this.a_id == id){
+                            this.clearData();
+                        }
+                    }).catch(error=>{
+                        this.alert = "error";
+                    })
+                }
+            })
+            /* var confirm = window.confirm('คุณต้องการลบหัวข้อวิชา ใช่หรือไม่');
             if (confirm == true){
-                 axios.delete(path)
-                .then(response=>{
-                    this.showAlert("success","ลบข้อมูลสำเร็จ");
-                    
-                    this.fetchData();
-                    if (this.a_id == id){
-                        this.clearData();
-                    }
-                })
-            }
+                
+            } */
            
         },
         clearData(){
@@ -489,19 +512,16 @@ export default {
                     detail: this.$store.state.content,
                     status: this.topic.status
                 }).then(response=>{
+                    this.alert = "success";
                     this.topic_status = "edit"
-                    topic = response.data.data;
-                    this.topic.name = topic.name;
-                    this.topic.order = topic.order;
-                    this.topic.detail = topic.detail;
-                    this.topic.status = topic.status;
+                    this.clearTopic();
                     this.toModalClose();
-                    this.showAlert("success","บันทึกข้อมูลสำเร็จ")
+                    
                     this.getTopicCount();                   
                     
                     this.$forceUpdate();
                 }).catch(error=>{
-                    this.showAlert("error","ไม่สามารถบันทึกข้อมูลได้")
+                    this.alert = "error";
                     console.log(error);
                 })
             }else if (this.topic_status == "edit"){
@@ -512,20 +532,28 @@ export default {
                     detail : this.$store.state.content,
                     status : this.topic.status,
                 }).then(response=>{
+                    this.alert = "success";
                     topic = response.data.data;
-                    this.topic.name = topic.name;
-                    this.topic.order = topic.order;
-                    this.topic.detail = topic.detail;
-                    this.topic.status = topic.status;
+                    this.clearTopic();
                     this.toModalClose();
-                    this.showAlert("success","บันทึกข้อมูลสำเร็จ")
+                    
                     this.arrTopic[this.index].count = 0;
                     this.getTopicCount();                  
                     this.$forceUpdate();
+                }).catch(error=>{
+                    this.alert = "error";
                 })
             }
             
 
+        },
+        clearTopic(){
+            this.topic.id = 0;
+            this.topic.article_id = 0;
+            this.topic.name = '';
+            this.topic.order = 0;
+            this.topic.detail = '';
+            this.topic.status = 1;
         },
         toEditTopic(topic){
             this.topic.id = topic.id;
@@ -578,12 +606,15 @@ export default {
         },
         testSubmit(){
            this.getTest();
-           this.show_test = false;
-           this.test.id = 0;
-           this.test.name = '';
-           this.test.type = 0;
-           this.test.status = 1;
-           this.test.article_id = 0;
+           setTimeout(() => {
+               this.show_test = false;
+                this.test.id = 0;
+                this.test.name = '';
+                this.test.type = 0;
+                this.test.status = 1;
+                this.test.article_id = 0;
+           }, 2000);
+           
         },
         testReset(){
             this.show_test = false;

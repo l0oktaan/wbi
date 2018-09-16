@@ -1,5 +1,6 @@
 <template>
     <div>
+        <my-alert :AlertType="alert"></my-alert>
         <div class="row justify-content-end">
             <div class="col-4">
                 <h2 class="header text-center">ข้อมูลวิชา</h2>
@@ -118,7 +119,8 @@ export default {
             pretest: [],
             posttest: [],
             myquestions:[],
-            question_path: []
+            question_path: [],
+            alert: ""
         }
     },
     created(){
@@ -142,13 +144,13 @@ export default {
             axios.put(`${this.source}/${this.subject[0].id}`,{
                 name: this.subjectname
             }).then(response => {
-                
-                this.showAlert("success","บันทึกสำเร็จ");
+                this.alert = "success";
                 this.isEdit = false;
                 
                 console.log(response);
             }).catch(error => {
                 this.isEdit = true;
+                this.alert = "error";
                 console.log(error);
             })
             
@@ -211,8 +213,8 @@ export default {
             console.log('test:' + this.test);
         },
         testSubmit(){
-            
-            this.showAlert("success","บันทึกข้อมูลสำเร็จ");  
+            //this.alert = "success"
+            //this.showAlert("success","บันทึกข้อมูลสำเร็จ");  
             this.getTest();
             
             this.$forceUpdate();

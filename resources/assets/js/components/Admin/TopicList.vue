@@ -1,5 +1,6 @@
 <template>
     <div class="topic">
+        
         <div class="row header align-items-center">
             <div class="col-md-1 text-center">หัวย่อยข้อที่</div>
             <div class="col-md-4 text-center">ชื่อหัวข้อย่อย</div>                        
@@ -66,13 +67,33 @@ export default {
         },
         deleteTopic(index){
             var path = `/api/articles/${this.article_id}/topics/${this.topics[index].id}`;
+            this.$swal({
+                title: "คุณต้องการลบหัวข้อย่อย ใช่หรือไม่ ?",
+                icon: "warning",
+                buttons: [
+                    'ยกเลิก',
+                    'ยืนยัน'
+                ],
+                dangerMode: true,
+            }).then(isConfirm =>{
+                if (isConfirm){
+                    axios.delete(path)
+                    .then(response=>{
+                        //this.$emit("showAlert",{"success","ลบข้อมูลสำเร็จ"});
+                        this.$parent.alert = "success";
+                        this.topic.id = 0;
+                        this.topic.article_id = 0;
+                        this.topic.name = '';
+                        this.topic.order = 0;
+                        this.topic.detail = '';
+                        this.topic.status = 1;
+                        this.$emit("fetchArticle");
+                        this.fetchData();
+                    })
+                }
+                
+            });
             
-            axios.delete(path)
-            .then(response=>{
-                //this.$emit("showAlert",{"success","ลบข้อมูลสำเร็จ"});
-                this.$emit("fetchArticle");
-                this.fetchData();
-            })
         }
     },
     watch:{

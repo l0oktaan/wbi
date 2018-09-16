@@ -1,5 +1,6 @@
 <template>
     <div>
+        <my-alert :AlertType="alert"></my-alert>
         <div class="row justify-content-md-center">
                 <div class="col-sm-8">
                     <b-form id="frmTest" @submit="onSubmit">
@@ -44,6 +45,7 @@ export default {
             
             testName: '',
             testType: 0,
+            alert: ''
         }
     },
     methods: {
@@ -68,8 +70,9 @@ export default {
                     status : "1"
 
                 }).then((response) => {
-                   
-                }).catch(error => {                    
+                   this.alert ="success"
+                }).catch(error => {     
+                    this.alert = "error"               
                     console.log('error:' + error);
                 })
             }else{
@@ -80,8 +83,9 @@ export default {
                     type : this.testType,
                     status : "1" 
                 }).then((response) => {
-                    
-                }).catch(error => {                    
+                    this.alert ="success"
+                }).catch(error => {          
+                    this.alert = "error"          
                     console.log('error:' + error);
                 })
             }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        
+        <my-alert :AlertType="alert"></my-alert>
         <b-button @click="toStart" variant="primary" size="sm" v-b-modal="`${modal_name}`">{{question.length}}&nbsp;คำถาม</b-button>
 
         <b-modal :id="`${modal_name}`" 
@@ -180,7 +180,8 @@ export default {
             ,
             options : [],
             message: "",
-            result: "success"
+            result: "success",
+            alert: ""
         }
     },
     created(){
@@ -321,9 +322,17 @@ export default {
                     this.getQuestion(this.path);
                     this.saveOptions();
                     this.clearQuestion();
-                    this.showAlert("success","บันทึกข้อมูลสำเร็จ");
+                    //this.showAlert("success","บันทึกข้อมูลสำเร็จ");
+                    this.alert = "success";                    
+                    
                 }).catch(error => {
                     //console.log("error:" + error);
+                    this.$swal({
+                        title: "เกิดข้อผิดพลาด",                        
+                        icon: "success",
+                        timer: 2000,
+                        button: false,
+                    });
                 })
             }else{
                 var path = "";
@@ -336,6 +345,7 @@ export default {
                     status : "1"
                 }).then(response => {
                     //console.log("response:" + response);
+                    this.alert = 'success';
                     var data = response.data.data;
                     this.q_id = data.id;
                     this.saveOptions();
@@ -343,34 +353,50 @@ export default {
                     
                     
                     this.clearQuestion();
-                    this.showAlert("success","บันทึกข้อมูลสำเร็จ");
+                    
                     
                 }).catch(error => {
+                     this.alert = 'error';
                     //console.log("error:" + error);
                 })
             }
         },
         q_delete(index){
-            var confirm = window.confirm('คุณต้องการลบคำถามนี้ใช่หรือไม่');
-            if (confirm == true){
-                var path = "";
-                path = `${this.path}/${this.question[index].id}`
-                
-                //console.log('path :' + path);
-                axios.delete(`${path}`,{
+            this.$swal({
+                title: "คุณต้องการลบคำถาม คำตอบ ใช่หรือไม่ ?",
+                icon: "warning",
+                buttons: [
+                    'ยกเลิก',
+                    'ยืนยัน'
+                ],
+                dangerMode: true,
+            }).then(isConfirm =>{
+                if (isConfirm){
+                    var path = "";
+                    path = `${this.path}/${this.question[index].id}`
+                    
+                    //console.log('path :' + path);
+                    axios.delete(`${path}`,{
 
-                }).then(response => {
-                    if (this.q_id == this.question[index].id){
-                        this.clearQuestion();
-                        this.clearOption();
-                    }
-                    this.showAlert("success","ลบข้อมูลสำเร็จ")
-                    this.getQuestion(this.path);
-                                     
-                }).catch(error => {
-                   // console.log("error: " + error);
-                })
-            }
+                    }).then(response => {
+                        if (this.q_id == this.question[index].id){
+                            this.clearQuestion();
+                            this.clearOption();
+                        }
+                        //this.showAlert("success","ลบข้อมูลสำเร็จ")
+                        this.alert = "success";
+                        this.getQuestion(this.path);
+                                        
+                    }).catch(error => {
+                        this.alert = "error";
+                    // console.log("error: " + error);
+                    })
+                }
+            });
+            
+            
+                
+            
             
         },
         addQuestion(){
