@@ -118,8 +118,7 @@ export default {
   color: #555;
   background-color: #ddd;
   background-image: linear-gradient(top, rgba(255,255,255,1),
-                                         rgba(255,255,255,0)),
-                    url(data:image/png;base64,iVBORw0KGg[...]QmCC); 
+                                         rgba(255,255,255,0)); 
   transition: background-color .2s ease-out;
   background-clip: padding-box; /* Fix bleeding */
   border-radius: 3px;

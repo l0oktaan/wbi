@@ -20,7 +20,9 @@ Vue.use(Vuex)
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-//axios.defaults.baseURL = 'http://kru-santi.com';
+//axios.defaults.baseURL = 'http://sajjainfo.com';
+//axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 Vue.use(VueAxios, axios)
 
 
@@ -165,6 +167,7 @@ Vue.component('MyTab', require('./components/MyTab.vue'));
 Vue.component('MyFooter', require('./components/MyFooter.vue'));
 Vue.component('MyDetail', require('./components/MyDetail.vue'));
 Vue.component('CodeBox', require('./components/CodeBox.vue'));
+Vue.component('MyTopic', require('./components/MyTopic.vue'));
 Vue.component('MyAlert', require('./components/MyAlert.vue'));
 
 Vue.component('MyArticles', require('./components/Articles/ListArticles.vue'));

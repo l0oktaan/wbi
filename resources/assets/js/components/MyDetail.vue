@@ -74,11 +74,7 @@
                     <ul class="list-group list-group-flush">                      
                         <li class="list-group-item" v-for="article in tabs[3].articles" :key="article.id">
                             <h3>{{article.name}}</h3>
-                            <ul>
-                                <li v-for="(value,index) in article.topics" :key="index">
-                                {{value.name}}
-                                </li>
-                            </ul>              
+                            <my-topic :article_id="article.id"></my-topic>            
                         </li>
                     </ul>
                 </div>
@@ -168,65 +164,7 @@ export default {
                 {
                     id: 4,
                     name: 'หัวข้อบทเรียน',
-                    articles: [
-                        {
-                            'id' : 1,
-                            'name' : 'บทที่ 1',
-                            'topics' : [
-                                {
-                                    'id' : 1,
-                                    'name' : 'หัวข้อที่ 1.1'
-                                },
-                                {
-                                    'id' : 2,
-                                    'name' : 'หัวข้อที่ 1.2'
-                                },
-                                {
-                                    'id' : 3,
-                                    'name' : 'หัวข้อที่ 1.3'
-                                },
-                            
-                            ]                
-                        },
-                        {
-                            'id' : 2,
-                            'name' : 'บทที่ 2',
-                            'topics' : [
-                                {
-                                    'id' : 1,
-                                    'name' : 'หัวข้อที่ 2.1'
-                                },
-                                {
-                                    'id' : 2,
-                                    'name' : 'หัวข้อที่ 2.2'
-                                },
-                                {
-                                    'id' : 3,
-                                    'name' : 'หัวข้อที่ 2.3'
-                                },
-                                
-                            ]                
-                        },
-                        {
-                            'id' : 3,
-                            'name' : 'บทที่ 3',
-                            'topics' : [
-                                {
-                                    'id' : 1,
-                                    'name' : 'หัวข้อที่ 3.1'
-                                },
-                                {
-                                    'id' : 2,
-                                    'name' : 'หัวข้อที่ 3.2'
-                                },
-                                {
-                                    'id' : 3,
-                                    'name' : 'หัวข้อที่ 3.3'
-                                },
-                                
-                            ]                
-                        }
-                    ]
+                    articles: []
                 },
             ]
         }
@@ -234,7 +172,7 @@ export default {
     methods: {
         btnClick(detail){            
             this.detail = this.detail == detail ? 0 : detail;
-            $("html, body").animate({ scrollTop: $(document).height() }, 1500);
+            //$("html, body").animate({ scrollTop: $(document).height() }, 1500);
             
             //$('div#detail11')[0].scrollIntoView(false);
             //let element = document.getElementById("detail");
@@ -242,8 +180,27 @@ export default {
                 
                 
             
+        },
+        fetchData() {
+            this.fetchArticle();
+        },
+        fetchArticle(){
+            var path = `/api/articles`;
+            //console.log('article :' + path);
+            axios.get(path)
+            .then(response=>{
+                this.tabs[3].articles = response.data.data;
+                this.$forceUpdate();
+
+            }).catch(error=>{
+
+            })
         }
+    },
+    created(){
+        this.fetchData();
     }
+
 }
 </script>
 <style scoped>
